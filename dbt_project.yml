@@ -2,7 +2,7 @@
 # Name your project! Project names should contain only lowercase characters
 # and underscores. A good package name should reflect your organization's
 # name or the intended use of these models
-name: 'jaffle_shop'
+name: 'taxi_rides_ny'
 version: '1.0.0'
 config-version: 2
 
@@ -28,8 +28,19 @@ clean-targets:         # directories to be removed by `dbt clean`
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 
+
+vars:
+  # The `is_test_run` variable default True for test to limit 100 for speeding up
+  # is_test_run: True
+  payment_type_values: [1,2,3,4,5,6]
+
 # These settings can be overridden in the individual model files
 # using the `{{ config(...) }}` macro.
 models:
-  jaffle_shop:
+  taxi_rides_ny:
     +materialized: table
+seeds:
+  taxi_rides_ny:
+    taxi_zone_lookup:
+      +column_types:
+        locationid: numeric
