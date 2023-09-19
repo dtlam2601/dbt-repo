@@ -7,6 +7,7 @@ with trips_data as (
     -- Revenue grouping
     pickup_zone as revenue_zone,
     date_trunc(pickup_datetime, month) as revenue_month,
+    service_type,
 
     -- Revenue calculation
     sum(fare_amount) as revenue_monthly_fare,
@@ -25,4 +26,4 @@ with trips_data as (
     avg(trip_distance) as avg_monthly_trip_distance,
 
     from trips_data
-    group by 1,2
+    group by 1,2,3
