@@ -1,0 +1,9 @@
+dataSources: []
+dbt:
+  projectDir: .
+
+profiler:
+  table:
+    # the maximum rows count to the profile. (default unlimited)
+    #limit: 100000
+    duplicateRows: true

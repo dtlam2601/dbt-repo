@@ -18,7 +18,7 @@ models:
       - name: service
         description: The types of services.
   
-  - name: dim_monthly_zone_revenue
+  - name: dm_monthly_zone_revenue
     description: Revenue monthly of zone.
     columns:
       - name: revenue_zone
