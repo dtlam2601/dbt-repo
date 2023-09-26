@@ -1,0 +1,89 @@
+name: dbt
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: ['main']
+    paths:
+      - models/**
+      - seeds/**
+      - tests/**
+
+env:
+  DBT_PROFILES_DIR: ./
+  DBT_GOOGLE_PROJECT: ${{ vars.DBT_GOOGLE_PROJECT }}
+  DBT_GOOGLE_DATASET: ${{ vars.DBT_GOOGLE_DATASET }}
+  DBT_TARGET:         ${{ vars.DBT_TARGET }}
+  DBT_GOOGLE_KEYFILE: tmp/gcloud/dtc-de-396509.json
+
+jobs:
+  dbt:
+    name: dbt
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9.17
+      
+      - name: checkout PR branch
+        uses: actions/checkout@master
+
+      - name: Setup dbt + Piperider
+        run: |
+          pip install dbt-bigquery
+          pip install piperider['bigquery']
+          dbt deps
+      
+      - run: dbt --version
+
+      - run: 'echo "$KEYFILE" > /tmp/gcloud/dtc-de-396509.json'
+        shell: bash
+        env:
+          KEYFILE: ${{secrets.DBT_GOOGLE_KEYFILE}}
+      
+      - name: dbt build PR env
+        run: dbt build --target env
+      
+      - name: PipeRider profile on PR env
+        run: piperider run --datasource pr --dbt-state target
+
+      - name: Checkout main branch
+        uses: actions/checkout@master
+        with:
+          ref: main
+      
+      - name: install dbt deps
+        run: dbt deps
+
+      - name: dbt build Prod env
+        run: dbt build --target prod
+
+      - name: Piperider profile on Prod env
+        run: piperider run --datasource prod --dbt-state target
+
+      - name: compare reports
+        run: |
+          piperider compare-reports \
+          --base /tmp/piperider/prod/run.json \
+          --target /tmp/piperider/pr/run.json \
+          -o /tmp/piperider/comparison
+      
+      # GitHub workflow snippet
+      - name: Create PR comment
+        uses: peter-evans/create-or-update-comment@v2.1.0
+        with:
+          issue-number: ${{ github.event.number }}
+          body-file: /tmp/piperider/comparison/summary.md
+
+      # GitHub workflow snippet
+      - name: Create run artifact
+        run: zip -r comparison-report.zip /tmp/comparison/
+      
+      - name: Upload profiling result
+        uses: actions/upload-artifact@v3
+        with: 
+          name: comparison-report-artifact
+          path: comparison-report.json

@@ -1,0 +1,44 @@
+models:
+  - name: dim_zones
+    description: The information about borough, zone and service_zone.
+    columns:
+      - name: locationid
+        description: Primary key for this table, generated for zone record.
+      - name: borough
+        description: Borough of zone.
+      - name: zone
+        description: Zone name.
+      - name: service
+        description: The types of services.
+  
+  - name: dm_monthly_zone_revenue
+    description: Revenue monthly of zone.
+    columns:
+      - name: revenue_zone
+        description: Revenue by zone.
+      - name: revenue_month
+        description: Revenue by month.
+      - name: revenue_monthly_fare
+        description: Revenue fare amount by month.
+      - name: revenue_monthly_extra
+        description: Revenue extra by month.
+      - name: revenue_monthly_mta_tax
+        description: Revenue mta tax by month
+      - name: revenue_monthly_tip_amount
+        description: Revenue of tip amount by month.
+      - name: revenue_monthly_tolls_amount
+        description: Revenue of tolls amount by month.
+      - name: revenue_monthly_ehail_fee
+        description: Revenue of ehail fee by month.
+      - name: revenue_monthly_improvement_surcharge
+        description: Revenue of improvement surcharge by month.
+      - name: revenue_monthly_total_amount
+        description: Revenue of total amount by month.
+      - name: revenue_monthly_congestion_surcharge
+        description: Revenue of congestion surcharge by month.
+      - name: total_monthly_trips
+        description: Total of trips by month.
+      - name: avg_monthly_passenger_count
+        description: Avg of passenger count by month.
+      - name: avg_monthly_trip_distance
+        description: Avg of trip distance by month.
