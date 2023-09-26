@@ -1,0 +1,33 @@
+taxi_rides_ny:
+  target: "{{ env_var('DBT_TARGET') }}"
+  outputs:
+    dev:
+      type: bigquery
+      method: service-account
+      keyfile: "{{ env_var('DBT_GOOGLE_KEYFILE') }}"
+      project: "{{ env_var('DBT_GOOGLE_PROJECT') }}"
+      dataset: "{{ env_var('DBT_GOOGLE_DATASET') }}"
+      threads: 24
+      timeout_second: 300
+      location: europe-west1-b
+      priority: interactive
+    pr:
+      type: bigquery
+      method: service-account
+      keyfile: "{{ env_var('DBT_GOOGLE_KEYFILE') }}"
+      project: "{{ env_var('DBT_GOOGLE_PROJECT') }}"
+      dataset: dbt_ny_taxi
+      threads: 4
+      timeout_second: 300
+      location: europe-west1-b
+      priority: interactive
+    prod:
+      type: bigquery
+      method: service-account
+      keyfile: "{{ env_var('DBT_GOOGLE_KEYFILE') }}"
+      project: "{{ env_var('DBT_GOOGLE_PROJECT') }}"
+      dataset: dbt_ny_taxi_prod
+      threads: 4
+      timeout_second: 300
+      location: europe-west1-b
+      priority: interactive
