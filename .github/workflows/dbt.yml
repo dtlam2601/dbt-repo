@@ -14,7 +14,7 @@ env:
   DBT_GOOGLE_PROJECT: ${{ vars.DBT_GOOGLE_PROJECT }}
   DBT_GOOGLE_DATASET: ${{ vars.DBT_GOOGLE_DATASET }}
   DBT_TARGET:         ${{ vars.DBT_TARGET }}
-  DBT_GOOGLE_KEYFILE: tmp/gcloud/dtc-de-396509.json
+  DBT_GOOGLE_KEYFILE: tmp/gcloud/google-service-account.json
 
 jobs:
   dbt:
