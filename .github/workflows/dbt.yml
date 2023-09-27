@@ -39,7 +39,7 @@ jobs:
       
       - run: dbt --version
 
-      - run: 'echo "$KEYFILE" > /tmp/gcloud/dtc-de-396509.json'
+      - run: 'echo "$KEYFILE" > /tmp/gcloud/google-service-account.json'
         shell: bash
         env:
           KEYFILE: ${{secrets.DBT_GOOGLE_KEYFILE}}
